@@ -33,3 +33,5 @@
 
 # Ignore the .vs folder
 .vs/
+raycasting-engine/Debug/
+raycasting-engine/raycasting-engine/Debug/
