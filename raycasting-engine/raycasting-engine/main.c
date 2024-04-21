@@ -1,17 +1,53 @@
 #include <stdio.h>
 #include <SDL.h>
 
-SDL_Window* window = NULL;
-SDL_Renderer* renderer = NULL;
-int isProgramRunning = 1;
+// Constants
+#define PI 3.14159265
+#define FOVA (60 * PI / 180)
+
+#define TILE_SIZE 64
+#define MAP_ROWS 13
+#define MAP_COLS 20
+float mapScaleFactor = 1.0;
+
+const int map[MAP_ROWS][MAP_COLS] = {
+	{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ,1, 1, 1, 1, 1, 1, 1},
+	{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+	{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+	{1, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1},
+	{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+	{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1},
+	{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1},
+	{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1},
+	{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 1},
+	{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+	{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+	{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+	{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
+};
 
 // For FPS
 #define FPS 30
 #define FRAME_LENGTH (1000 / FPS)
 int lastFrameTicks;
 
-// Player vars
-int playerX, playerY;
+#define WIN_WIDTH (MAP_COLS * TILE_SIZE)
+#define WIN_HEIGHT (MAP_ROWS * TILE_SIZE)
+SDL_Window* window = NULL;
+SDL_Renderer* renderer = NULL;
+int isProgramRunning = 1;
+
+struct Player {
+	float x;
+	float y;
+	float width;
+	float height;
+	int turnDir;
+	int walkDir;
+	float rotation;
+	float walkSpeed;
+	float turnSpeed;
+} player;
 
 int InitalizeWindow() {
 	// Intializes everything for SDL
@@ -24,8 +60,8 @@ int InitalizeWindow() {
 		"740 Final Project", // Window title
 		SDL_WINDOWPOS_CENTERED, // Center the window on width & height
 		SDL_WINDOWPOS_CENTERED, 
-		800, // Window resolution: width & height
-		600,
+		WIN_WIDTH, // Window resolution: width & height
+		WIN_HEIGHT,
 		SDL_WINDOW_SHOWN // Show window
 		);
 
@@ -54,8 +90,16 @@ void DestroyWindow() {
 }
 
 void Setup() {
-	playerX = 0;
-	playerY = 0;
+	// Set player stats
+	player.x = WIN_WIDTH / 2;
+	player.y = WIN_HEIGHT / 2;
+	player.width = 5;
+	player.height = 5;
+	player.walkDir = 0;
+	player.turnDir = 0;
+	player.rotation = PI / 2;
+	player.walkSpeed = 80;
+	player.turnSpeed = 45 * (PI / 180);
 }
 
 void InputProcessing() {
@@ -76,14 +120,32 @@ void InputProcessing() {
 	}
 }
 
+// Renders the tile map
+void RenderMap() {
+	// Go through tiles by row and column
+	for (int i = 0; i < MAP_ROWS; i++) {
+		for (int j = 0; j < MAP_COLS; j++) {
+			// Determine tile parameters
+			int tileX = j * TILE_SIZE;
+			int tileY = i * TILE_SIZE;
+			int tileColor = map[i][j] != 0 ? 255 : 0;
+
+			// Render tile
+			SDL_SetRenderDrawColor(renderer, tileColor, tileColor, tileColor, 255);
+			SDL_Rect mapTile = {
+				tileX * mapScaleFactor, tileY* mapScaleFactor, TILE_SIZE * mapScaleFactor, TILE_SIZE* mapScaleFactor
+			};
+			SDL_RenderFillRect(renderer, &mapTile);
+		}
+	}
+}
+
 void Render() {
 	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 	SDL_RenderClear(renderer);
 
 	// Render all objects on the current cycle
-	SDL_SetRenderDrawColor(renderer, 0, 100, 255, 255);
-	SDL_Rect playerRect = { playerX, playerY, 20, 20 };
-	SDL_RenderFillRect(renderer, &playerRect);
+	RenderMap();
 
 	SDL_RenderPresent(renderer);
 }
@@ -99,8 +161,7 @@ void Update() {
 	lastFrameTicks = SDL_GetTicks();
 
 	// Update objects based on deltaTime!
-	playerX += 50 * deltaTime;
-	playerY += 50 * deltaTime;
+	// Ex. playerX += 50 * deltaTime;
 }
 
 int main(int argc, char* args[]) {
