@@ -5,6 +5,14 @@ SDL_Window* window = NULL;
 SDL_Renderer* renderer = NULL;
 int isProgramRunning = 1;
 
+// For FPS
+#define FPS 30
+#define FRAME_LENGTH (1000 / FPS)
+int lastFrameTicks;
+
+// Player vars
+int playerX, playerY;
+
 int InitalizeWindow() {
 	// Intializes everything for SDL
 	if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
@@ -45,6 +53,11 @@ void DestroyWindow() {
 	SDL_Quit();
 }
 
+void Setup() {
+	playerX = 0;
+	playerY = 0;
+}
+
 void InputProcessing() {
 	SDL_Event event;
 	SDL_PollEvent(&event);
@@ -67,18 +80,38 @@ void Render() {
 	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 	SDL_RenderClear(renderer);
 
-	// TODO:
-	// Should render all objects on the current cycle
+	// Render all objects on the current cycle
+	SDL_SetRenderDrawColor(renderer, 0, 100, 255, 255);
+	SDL_Rect playerRect = { playerX, playerY, 20, 20 };
+	SDL_RenderFillRect(renderer, &playerRect);
 
 	SDL_RenderPresent(renderer);
+}
+
+void Update() {
+	// Wait to update the target frame -- even framerate independent of processor power
+	int waitTime = FRAME_LENGTH - (SDL_GetTicks() - lastFrameTicks);
+	if (waitTime > 0 && waitTime <= FRAME_LENGTH) {
+		SDL_Delay(waitTime);
+	}
+
+	float deltaTime = (SDL_GetTicks() - lastFrameTicks) / 1000.0f;
+	lastFrameTicks = SDL_GetTicks();
+
+	// Update objects based on deltaTime!
+	playerX += 50 * deltaTime;
+	playerY += 50 * deltaTime;
 }
 
 int main(int argc, char* args[]) {
 	isProgramRunning = InitalizeWindow();
 
+	Setup();
+
 	while (isProgramRunning)
 	{
 		InputProcessing();
+		Update();
 		Render();
 	}
 
