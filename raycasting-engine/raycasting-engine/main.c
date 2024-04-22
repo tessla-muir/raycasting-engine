@@ -107,20 +107,51 @@ void InputProcessing() {
 	SDL_PollEvent(&event);
 
 	switch (event.type) {
+		// User can press X on window to quit
 		case SDL_QUIT: {
 			isProgramRunning = 0;
 			break;
 		}
 		case SDL_KEYDOWN: {
+			// User can press ESC key to quit
 			if (event.key.keysym.sym == SDLK_ESCAPE) {
 				isProgramRunning = 0;
 				break;
 			}
+			// Start player movement/turning on key down
+			if (event.key.keysym.sym == SDLK_UP) {
+				player.walkDir = 1;
+			}
+			if (event.key.keysym.sym == SDLK_DOWN) {
+				player.walkDir = -1;
+			}
+			if (event.key.keysym.sym == SDLK_LEFT) {
+				player.turnDir = 1;
+			}
+			if(event.key.keysym.sym == SDLK_RIGHT) {
+				player.turnDir = -1;
+			}
+			break;
+		}
+		case SDL_KEYUP: {
+			// Stop player movement/turning on key up
+			if (event.key.keysym.sym == SDLK_UP) {
+				player.walkDir = 0;
+			}
+			if (event.key.keysym.sym == SDLK_DOWN) {
+				player.walkDir = 0;
+			}
+			if (event.key.keysym.sym == SDLK_LEFT) {
+				player.turnDir = 0;
+			}
+			if (event.key.keysym.sym == SDLK_RIGHT) {
+				player.turnDir = 0;
+			}
+			break;
 		}
 	}
 }
 
-// Renders the tile map
 void RenderMap() {
 	// Go through tiles by row and column
 	for (int i = 0; i < MAP_ROWS; i++) {
@@ -140,12 +171,44 @@ void RenderMap() {
 	}
 }
 
+void RenderPlayer() {
+	// Player Rectangle
+	SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);
+	SDL_Rect playerRect = {
+		player.x * mapScaleFactor,
+		player.y * mapScaleFactor,
+		player.width * mapScaleFactor,
+		player.height * mapScaleFactor
+	};
+	SDL_RenderFillRect(renderer, &playerRect);
+
+	// Line of player direction
+	SDL_RenderDrawLine(
+		renderer,
+		player.x * mapScaleFactor,
+		player.y * mapScaleFactor,
+		player.x + cos(player.rotation) * 35 * mapScaleFactor,
+		player.y + sin(player.rotation) * 35 * mapScaleFactor
+	);
+}
+
+void PlayerMovement(float time) {
+	// Rotation
+	player.rotation += player.turnDir * (player.turnSpeed * time);
+
+	// Movement
+	float step = player.walkDir * (player.walkSpeed * time);
+	player.x += cos(player.rotation) * step;
+	player.y += sin(player.rotation) * step;
+}
+
 void Render() {
 	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 	SDL_RenderClear(renderer);
 
 	// Render all objects on the current cycle
 	RenderMap();
+	RenderPlayer();
 
 	SDL_RenderPresent(renderer);
 }
@@ -161,7 +224,7 @@ void Update() {
 	lastFrameTicks = SDL_GetTicks();
 
 	// Update objects based on deltaTime!
-	// Ex. playerX += 50 * deltaTime;
+	PlayerMovement(deltaTime);
 }
 
 int main(int argc, char* args[]) {
