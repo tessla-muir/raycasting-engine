@@ -192,14 +192,30 @@ void RenderPlayer() {
 	);
 }
 
+int hasMapWallAt(float x, float y) {
+	// Check window border
+	if (x < 0 || x > WIN_WIDTH || y < 0 || y > WIN_HEIGHT) return 0;
+
+	// Check made walls as well
+	int mapTileX = floor(x / TILE_SIZE);
+	int mapTileY = floor(y / TILE_SIZE);
+	return map[mapTileY][mapTileX] != 0;
+}
+
 void PlayerMovement(float time) {
 	// Rotation
 	player.rotation += player.turnDir * (player.turnSpeed * time);
 
 	// Movement
 	float step = player.walkDir * (player.walkSpeed * time);
-	player.x += cos(player.rotation) * step;
-	player.y += sin(player.rotation) * step;
+	float newX = player.x + cos(player.rotation) * step;
+	float newY = player.y + sin(player.rotation) * step;
+
+	// Wall Collisions
+	if (!hasMapWallAt(newX, newY)) {
+		player.x = newX;
+		player.y = newY;
+	}
 }
 
 void Render() {
