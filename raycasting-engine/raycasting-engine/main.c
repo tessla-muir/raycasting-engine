@@ -196,11 +196,11 @@ float NormalizeAngle(float angle) {
 	return angle;
 }
 
-float distanceBetweenPoint(x1, y1, x2, y2) {
+float DistanceBetweenPoints(x1, y1, x2, y2) {
 	return sqrtf((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
 }
 
-void castRay(float rayAngle, int stripId) {
+void CastRay(float rayAngle, int stripId) {
 	rayAngle = NormalizeAngle(rayAngle);
 
 	int isRayFacingDown = rayAngle > 0 && rayAngle < PI;
@@ -296,7 +296,7 @@ void castRay(float rayAngle, int stripId) {
 	}
 
 	// Calc both horz and vert hit distances, chooose the smallest one
-	float horizontalHitDist = foundHorizontalWallHit ? distanceBetweenPoints(player.x, player.y, horizontalWallHitX, horizontalWallHitY) : INT_MAX;
+	float horizontalHitDist = foundHorizontalWallHit ? DistanceBetweenPoints(player.x, player.y, horizontalWallHitX, horizontalWallHitY) : INT_MAX;
 }
 
 void CastAllRays() {
@@ -304,7 +304,7 @@ void CastAllRays() {
 	float rayAngle = player.rotation - (FOVA / 2);
 	
 	for (int stripId = 0; stripId < NUM_RAYS; stripId++) {
-		castRay(rayAngle, stripId);
+		CastRay(rayAngle, stripId);
 
 		rayAngle += FOVA / NUM_RAYS;
 	}
