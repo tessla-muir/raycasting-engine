@@ -1,6 +1,8 @@
 #include <stdio.h>
+#include <stdint.h>
 #include <SDL.h>
 #include <limits.h>
+#include <textures.h>
 
 // Constants
 #define PI 3.14159265
@@ -17,27 +19,29 @@ const int map[MAP_ROWS][MAP_COLS] = {
 	{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ,1, 1, 1, 1, 1, 1, 1},
 	{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
 	{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-	{1, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1},
+	{1, 0, 0, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 0, 1},
 	{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-	{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1},
-	{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1},
-	{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1},
-	{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 1},
+	{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 1},
 	{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+	{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 1},
+	{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+	{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8, 0, 7, 0, 6, 0, 5, 0, 0, 1},
 	{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
 	{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
 	{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
 };
 
 // For FPS
-#define FPS 30
+#define FPS 60
 #define FRAME_LENGTH (1000 / FPS)
 int lastFrameTicks;
 
-Uint32* colorBuffer = NULL;
-
+uint32_t* colorBuffer = NULL;
 SDL_Texture* colorBufferTexture;
+uint32_t* textures[NUM_TEXTURES];
 
+#define TEX_WIDTH 64
+#define TEX_HEIGHT 64
 #define WIN_WIDTH (MAP_COLS * TILE_SIZE)
 #define WIN_HEIGHT (MAP_ROWS * TILE_SIZE)
 SDL_Window* window = NULL;
@@ -105,6 +109,8 @@ int InitalizeWindow() {
 }
 
 void DestroyWindow() {
+	//Free ALL textures
+	freeWallTextures();
 	free(colorBuffer);
 	SDL_DestroyTexture(colorBufferTexture);
 	SDL_DestroyRenderer(renderer);
@@ -125,9 +131,11 @@ void Setup() {
 	player.turnSpeed = 45 * (PI / 180);
 
 	// Allocate total amount of bytes to hold in buffer 
-	colorBuffer = (Uint32*)malloc(sizeof(Uint32) * (Uint32)WIN_WIDTH * (Uint32)WIN_HEIGHT);
+	colorBuffer = (uint32_t*)malloc(sizeof(uint32_t) * (uint32_t)WIN_WIDTH * (uint32_t)WIN_HEIGHT);
+	colorBufferTexture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA32, SDL_TEXTUREACCESS_STREAMING, WIN_WIDTH, WIN_HEIGHT);
 
-	colorBufferTexture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STREAMING, WIN_WIDTH, WIN_HEIGHT);
+	// Asks uPNG to decode PNG files and loads them to wallTex array
+	loadWallTextures();
 }
 
 int hasMapWallAt(float x, float y) {
@@ -418,9 +426,29 @@ void Generate3DProj() {
 			colorBuffer[(WIN_WIDTH * y) + i] = 0xCCCCCC;
 		}
 
+		int textureOffsetX;
+		// Calc Offset X
+		if (rays[i].wasHitVertical) {
+			// perform Offset for vert hit
+			textureOffsetX = (int)rays[i].wallHitY % TILE_SIZE;
+		}
+		else {
+			// perform Offset for horz hit
+			textureOffsetX = (int)rays[i].wallHitX % TILE_SIZE;
+		}
+
+		// Texture ID from map
+		int texNum = rays[i].wallHitContent - 1;
+
 		// Render wall top to bottom pixel
 		for (int y = wallTopPix; y < wallBotPix; y++) {
-			colorBuffer[(WIN_WIDTH * y) + i] = rays[i].wasHitVertical ? 0xA6ECE0 : 0xA6ECE0;
+			// Calc Offset Y
+			int distanceFromTop = y + (wallStripHeight / 2) - (WIN_HEIGHT / 2);
+			int textureOffsetY = distanceFromTop *  ((float)TEX_HEIGHT / wallStripHeight);
+
+			// set color of wall to the color of texture
+			uint32_t texColor = wallTextures[texNum].texture_buffer[(TEX_WIDTH * textureOffsetY) + textureOffsetX];
+			colorBuffer[(WIN_WIDTH * y) + i] = texColor;
 		}
 
 		// Render color of floor
@@ -430,7 +458,7 @@ void Generate3DProj() {
 	}
 }
 
-void ClearColorBuffer(Uint32 color) {
+void ClearColorBuffer(uint32_t color) {
 	for (int x = 0; x < WIN_WIDTH; x++) {
 		for (int y = 0; y < WIN_HEIGHT; y++) {
 			colorBuffer[(WIN_WIDTH * y) + x] = color;
@@ -439,7 +467,7 @@ void ClearColorBuffer(Uint32 color) {
 }
 
 void RenderColorBuffer() {
-	SDL_UpdateTexture(colorBufferTexture, NULL, colorBuffer, (int)(Uint32)WIN_WIDTH * sizeof(Uint32));
+	SDL_UpdateTexture(colorBufferTexture, NULL, colorBuffer, (int)(uint32_t)WIN_WIDTH * sizeof(uint32_t));
 	SDL_RenderCopy(renderer, colorBufferTexture, NULL, NULL);
 }
 
