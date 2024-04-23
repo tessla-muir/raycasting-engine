@@ -1,10 +1,13 @@
 #include <stdio.h>
 #include <SDL.h>
+#include <limits.h>
 
 // Constants
 #define PI 3.14159265
 #define FOVA (60 * PI / 180)
 
+#define WALL_STRIP_WIDTH 1
+#define NUM_RAYS WIN_WIDTH / WALL_STRIP_WIDTH
 #define TILE_SIZE 64
 #define MAP_ROWS 13
 #define MAP_COLS 20
@@ -48,6 +51,20 @@ struct Player {
 	float walkSpeed;
 	float turnSpeed;
 } player;
+
+struct Ray
+{
+	float rayAngle;
+	float wallHitx;
+	float wallHity;
+	float distance;
+	int wasHitVertical;
+	int isRayFacingUp;
+	int isRayFacingDown;
+	int isRayFacingLeft;
+	int isRayFacingRight;
+	int wallHitContent;
+} rays[NUM_RAYS];
 
 int InitalizeWindow() {
 	// Intializes everything for SDL
@@ -171,6 +188,128 @@ void RenderMap() {
 	}
 }
 
+float NormalizeAngle(float angle) {
+	angle = remainderf(angle, (2 * PI));
+	if (angle < 0) {
+		angle = (2 * PI) + angle;
+	}
+	return angle;
+}
+
+float distanceBetweenPoint(x1, y1, x2, y2) {
+	return sqrtf((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
+}
+
+void castRay(float rayAngle, int stripId) {
+	rayAngle = NormalizeAngle(rayAngle);
+
+	int isRayFacingDown = rayAngle > 0 && rayAngle < PI;
+	int isRayFacingUp = !isRayFacingDown;
+	int isRayFacingRight = rayAngle < 0.5 * PI || rayAngle > 1.5 * PI;
+	int isRayFacingLeft = !isRayFacingRight;
+
+	float xintercept, yintercept;
+	float xstep, ystep;
+
+	// Horizontal Ray-Grid Intercention Code
+	int foundHorizontalWallHit = SDL_FALSE;
+	float horizontalWallHitX = 0;
+	float horizontalWallHitY = 0;
+	int horizontalWallContent = 0;
+
+	// Find the y-cord of the closest horz grid intercention
+	yintercept = floorf(player.y / TILE_SIZE) * TILE_SIZE;
+	yintercept += isRayFacingDown ? TILE_SIZE : 0;
+
+	// Find the x-cord of the closest horz grid intercention
+	xintercept = player.x + (yintercept - player.y) / tanf(rayAngle);
+
+	// Calc the increment xstep and ystep
+	ystep = TILE_SIZE;
+	ystep *= isRayFacingUp ? -1 : 1;
+	
+	xstep = TILE_SIZE / tanf(rayAngle);
+	xstep *= (isRayFacingLeft && xstep > 0) ? -1 : 1;
+	xstep *= (isRayFacingRight && xstep < 0) ? -1 : 1;
+
+	float nextHorizontalTouchX = xintercept;
+	float nextHorizontalTouchY = yintercept;
+
+	while (nextHorizontalTouchX >= 0 && nextHorizontalTouchX <= WIN_WIDTH && nextHorizontalTouchY >= 0 && nextHorizontalTouchY <= WIN_HEIGHT) {
+		float xToCheck = nextHorizontalTouchX;
+		float yToCheck = nextHorizontalTouchY + (isRayFacingUp ? -1 : 0);
+
+		if (hasMapWallAt(xToCheck, yToCheck)) {
+			//Found Wall Hit
+			horizontalWallHitX = nextHorizontalTouchX;
+			horizontalWallHitY = nextHorizontalTouchY;
+			horizontalWallContent = map[(int) floorf(yToCheck / TILE_SIZE)][(int) floorf(xToCheck / TILE_SIZE)];
+			foundHorizontalWallHit = SDL_TRUE;
+			break;
+		}
+		else {
+			nextHorizontalTouchX += xstep;
+			nextHorizontalTouchY += ystep;
+		}
+	}
+
+	// Vertical Ray-Grid Intercention Code
+	int foundVerticalWallHit = SDL_FALSE;
+	float VerticalWallHitX = 0;
+	float VerticalWallHitY = 0;
+	int VerticalWallContent = 0;
+
+	// Find the y-cord of the closest horz grid intercention
+	xintercept = floorf(player.x / TILE_SIZE) * TILE_SIZE;
+	xintercept += isRayFacingRight ? TILE_SIZE : 0;
+
+	// Find the x-cord of the closest horz grid intercention
+	yintercept = player.y + (xintercept - player.x) / tanf(rayAngle);
+
+	// Calc the increment xstep and ystep
+	xstep = TILE_SIZE;
+	xstep *= isRayFacingLeft ? -1 : 1;
+
+	ystep = TILE_SIZE / tanf(rayAngle);
+	ystep *= (isRayFacingUp && xstep > 0) ? -1 : 1;
+	ystep *= (isRayFacingDown && xstep < 0) ? -1 : 1;
+
+	float nextVerticalTouchX = xintercept;
+	float nextVerticalTouchY = yintercept;
+
+	while (nextVerticalTouchX >= 0 && nextVerticalTouchX <= WIN_WIDTH && nextVerticalTouchY >= 0 && nextVerticalTouchY <= WIN_HEIGHT) {
+		float xToCheck = nextVerticalTouchX + (isRayFacingLeft ? -1 : 0);
+		float yToCheck = nextVerticalTouchY;
+
+		if (hasMapWallAt(xToCheck, yToCheck)) {
+			//Found Wall Hit
+			VerticalWallHitX = nextVerticalTouchX;
+			VerticalWallHitY = nextVerticalTouchY;
+			VerticalWallContent = map[(int)floorf(yToCheck / TILE_SIZE)][(int)floorf(xToCheck / TILE_SIZE)];
+			foundVerticalWallHit = SDL_TRUE;
+			break;
+		}
+		else {
+			nextVerticalTouchX += xstep;
+			nextVerticalTouchY += ystep;
+		}
+	}
+
+	// Calc both horz and vert hit distances, chooose the smallest one
+	float horizontalHitDist = foundHorizontalWallHit ? distanceBetweenPoints(player.x, player.y, horizontalWallHitX, horizontalWallHitY) : INT_MAX;
+}
+
+void CastAllRays() {
+	// start first ray subtracting half of our FOV
+	float rayAngle = player.rotation - (FOVA / 2);
+	
+	for (int stripId = 0; stripId < NUM_RAYS; stripId++) {
+		castRay(rayAngle, stripId);
+
+		rayAngle += FOVA / NUM_RAYS;
+	}
+}
+
 void RenderPlayer() {
 	// Player Rectangle
 	SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);
@@ -224,6 +363,7 @@ void Render() {
 
 	// Render all objects on the current cycle
 	RenderMap();
+	//RenderRays();
 	RenderPlayer();
 
 	SDL_RenderPresent(renderer);
@@ -241,6 +381,7 @@ void Update() {
 
 	// Update objects based on deltaTime!
 	PlayerMovement(deltaTime);
+	CastAllRays();
 }
 
 int main(int argc, char* args[]) {
