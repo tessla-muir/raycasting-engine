@@ -2,7 +2,7 @@
 #include <stdint.h>
 #include <SDL.h>
 #include <limits.h>
-#include <textures.h>
+#include "textures.h"
 
 // Constants
 #define PI 3.14159265
@@ -47,6 +47,8 @@ uint32_t* textures[NUM_TEXTURES];
 SDL_Window* window = NULL;
 SDL_Renderer* renderer = NULL;
 int isProgramRunning = 1;
+
+#define DISTANCE_PROJ_PLANE ((WIN_WIDTH / 2) / tan(FOVA / 2))
 
 struct Player {
 	float x;
@@ -321,11 +323,9 @@ void CastRay(float rayAngle, int stripId) {
 }
 
 void CastAllRays() {
-	// start first ray subtracting half of our FOV
-	float rayAngle = player.rotation - (FOVA / 2);
-
-	for (int stripId = 0; stripId < NUM_RAYS; stripId++) {
-		CastRay(rayAngle, stripId);
+	for (int column = 0; column < NUM_RAYS; column++) {
+		float rayAngle = player.rotation + atan((column - NUM_RAYS/2) / DISTANCE_PROJ_PLANE);
+		CastRay(rayAngle, column);
 
 		rayAngle += FOVA / NUM_RAYS;
 	}
@@ -410,8 +410,7 @@ void InputProcessing() {
 void Generate3DProj() {
 	for (int i = 0; i < NUM_RAYS; i++) {
 		float perDist = rays[i].distance * cos(rays[i].rayAngle - player.rotation);
-		float distanceProjPlane = (WIN_WIDTH / 2) / tan(FOVA / 2);
-		float projWallHeight = (TILE_SIZE / perDist) * distanceProjPlane;
+		float projWallHeight = (TILE_SIZE / perDist) * DISTANCE_PROJ_PLANE;
 		
 		int wallStripHeight = (int)projWallHeight;
 
