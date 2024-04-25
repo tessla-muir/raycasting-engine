@@ -57,8 +57,8 @@ void Setup() {
 	// Set player stats
 	player.x = WIN_WIDTH / 2;
 	player.y = WIN_HEIGHT / 2;
-	player.width = 5;
-	player.height = 5;
+	player.width = 25;
+	player.height = 25;
 	player.walkDir = 0;
 	player.turnDir = 0;
 	player.rotation = PI / 2;
@@ -96,15 +96,7 @@ void PlayerMovement(float time) {
 }
 
 void RenderPlayer() {
-	//// Player Rectangle
-	//SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);
-	//SDL_Rect playerRect = {
-	//	player.x * mapScaleFactor,
-	//	player.y * mapScaleFactor,
-	//	player.width * mapScaleFactor,
-	//	player.height * mapScaleFactor
-	//};
-	//SDL_RenderFillRect(renderer, &playerRect);
+	DrawRect(player.x * mapScaleFactor, player.y * mapScaleFactor, player.width * mapScaleFactor, player.height * mapScaleFactor, 0xFFFFFFF);
 }
 
 float DistanceBetweenPoints(float x1, float y1, float x2, float y2) {
