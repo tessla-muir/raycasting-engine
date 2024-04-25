@@ -248,7 +248,7 @@ void RenderMap() {
 			// Determine tile parameters
 			int tileX = j * TILE_SIZE;
 			int tileY = i * TILE_SIZE;
-			int tileColor = map[i][j] != 0 ? 255 : 0;
+			int tileColor = map[i][j] != 0 ? 0xFFFFFFF : 0;
 
 			DrawRect(tileX * mapScaleFactor, tileY * mapScaleFactor, TILE_SIZE * mapScaleFactor, TILE_SIZE * mapScaleFactor, tileColor);
 		}
@@ -256,10 +256,9 @@ void RenderMap() {
 }
 
 void RenderRays() {
-	//SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
-	//for (int i = 0; i < NUM_RAYS; i++) {
-	//	SDL_RenderDrawLine(renderer, mapScaleFactor * player.x, mapScaleFactor * player.y, mapScaleFactor * rays[i].wallHitX, mapScaleFactor * rays[i].wallHitY);
-	//}
+	for (int i = 0; i < NUM_RAYS; i++) {
+		DrawLine(mapScaleFactor * player.x, mapScaleFactor * player.y, mapScaleFactor * rays[i].wallHitX, mapScaleFactor * rays[i].wallHitY, 0xFF0000FF);
+	}
 }
 
 void InputProcessing() {

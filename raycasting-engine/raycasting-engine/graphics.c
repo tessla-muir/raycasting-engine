@@ -44,7 +44,6 @@ int InitalizeWindow() {
 }
 
 void DestroyWindow() {
-	// Free textures
 	free(colorBuffer);
 	SDL_DestroyTexture(colorBufferTexture);
 
@@ -77,5 +76,28 @@ void DrawRect(int x, int y, int width, int height, uint32_t color) {
 		for (int j = y; j < y + height; j++) {
 			DrawPixel(i, j, color);
 		}
+	}
+}
+
+// Follows Digital Differential Analyzer for line drawing
+// Thanks to GeeksForGeeks for DDA Line Explanation
+void DrawLine(int x0, int y0, int x1, int y1, uint32_t color) {
+	// Delta values
+	int dX = x1 - x0;
+	int dY = y1 - y0;
+
+	int longestSide = (abs(dX) >= abs(dY)) ? abs(dX) : abs(dY);
+
+	// Find increments
+	float xIncr = dX / (float)longestSide;
+	float yIncr = dY / (float)longestSide;
+
+	float x = x0;
+	float y = y0;
+
+	for (int i = 0; i < longestSide; i++) {
+		DrawPixel(round(x), round(y), color);
+		x += xIncr;
+		y += yIncr;
 	}
 }
