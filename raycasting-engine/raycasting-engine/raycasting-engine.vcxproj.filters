@@ -18,5 +18,78 @@
     <ClCompile Include="main.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="textures.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="upng.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="graphics.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="images\._bluestone.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images\._colorstone.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images\._eagle.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images\._graystone.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images\._mossystone.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images\._pikuma.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images\._purplestone.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images\._redbrick.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images\._wood.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images\bluestone.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images\colorstone.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images\eagle.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images\graystone.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images\mossystone.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images\pikuma.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images\purplestone.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images\redbrick.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images\wood.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="graphics.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="constants.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

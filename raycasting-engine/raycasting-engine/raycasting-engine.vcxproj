@@ -148,6 +148,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="graphics.c" />
     <ClCompile Include="main.c" />
     <ClCompile Include="textures.c" />
     <ClCompile Include="upng.c" />
@@ -171,6 +172,10 @@
     <Image Include="images\purplestone.png" />
     <Image Include="images\redbrick.png" />
     <Image Include="images\wood.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="constants.h" />
+    <ClInclude Include="graphics.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
