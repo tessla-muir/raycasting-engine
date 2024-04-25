@@ -155,6 +155,7 @@
     <ClCompile Include="rays.c" />
     <ClCompile Include="textures.c" />
     <ClCompile Include="upng.c" />
+    <ClCompile Include="wall.c" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="images\._bluestone.png" />
@@ -182,6 +183,9 @@
     <ClInclude Include="map.h" />
     <ClInclude Include="player.h" />
     <ClInclude Include="rays.h" />
+    <ClInclude Include="textures.h" />
+    <ClInclude Include="upng.h" />
+    <ClInclude Include="wall.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
