@@ -27,6 +27,15 @@
     <ClCompile Include="graphics.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="rays.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="player.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="map.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="images\._bluestone.png">
@@ -89,6 +98,15 @@
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="constants.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="rays.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="player.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="map.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>

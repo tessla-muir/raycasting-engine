@@ -4,6 +4,7 @@
 #define TILE_SIZE 64
 #define MAP_ROWS 13
 #define MAP_COLS 20
+#define MAP_SCALER 0.25
 
 #define WIN_WIDTH (MAP_COLS * TILE_SIZE)
 #define WIN_HEIGHT (MAP_ROWS * TILE_SIZE)

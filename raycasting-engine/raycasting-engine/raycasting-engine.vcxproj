@@ -150,6 +150,9 @@
   <ItemGroup>
     <ClCompile Include="graphics.c" />
     <ClCompile Include="main.c" />
+    <ClCompile Include="map.c" />
+    <ClCompile Include="player.c" />
+    <ClCompile Include="rays.c" />
     <ClCompile Include="textures.c" />
     <ClCompile Include="upng.c" />
   </ItemGroup>
@@ -176,6 +179,9 @@
   <ItemGroup>
     <ClInclude Include="constants.h" />
     <ClInclude Include="graphics.h" />
+    <ClInclude Include="map.h" />
+    <ClInclude Include="player.h" />
+    <ClInclude Include="rays.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -12,7 +12,7 @@ static const char* textureFileNames[NUM_TEXTURES] = {
     "./images/eagle.png"
 };
 
-void loadWallTextures() {
+void LoadWallTextures() {
     for (int i = 0; i < NUM_TEXTURES; i++) {
         upng_t* upng;
 
@@ -27,10 +27,9 @@ void loadWallTextures() {
             }
         }
     }
-
 }
 
-void freeWallTextures() {
+void FreeWallTextures() {
     for (int i = 0; i < NUM_TEXTURES; i++) {
         upng_free(wallTextures[i].upngTexture);
     }
