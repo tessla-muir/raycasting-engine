@@ -250,22 +250,17 @@ void CastAllRays() {
 }
 
 void RenderMap() {
-	//// Go through tiles by row and column
-	//for (int i = 0; i < MAP_ROWS; i++) {
-	//	for (int j = 0; j < MAP_COLS; j++) {
-	//		// Determine tile parameters
-	//		int tileX = j * TILE_SIZE;
-	//		int tileY = i * TILE_SIZE;
-	//		int tileColor = map[i][j] != 0 ? 255 : 0;
+	// Go through tiles by row and column
+	for (int i = 0; i < MAP_ROWS; i++) {
+		for (int j = 0; j < MAP_COLS; j++) {
+			// Determine tile parameters
+			int tileX = j * TILE_SIZE;
+			int tileY = i * TILE_SIZE;
+			int tileColor = map[i][j] != 0 ? 255 : 0;
 
-	//		// Render tile
-	//		SDL_SetRenderDrawColor(renderer, tileColor, tileColor, tileColor, 255);
-	//		SDL_Rect mapTile = {
-	//			tileX * mapScaleFactor, tileY* mapScaleFactor, TILE_SIZE * mapScaleFactor, TILE_SIZE* mapScaleFactor
-	//		};
-	//		SDL_RenderFillRect(renderer, &mapTile);
-	//	}
-	//}
+			DrawRect(tileX * mapScaleFactor, tileY * mapScaleFactor, TILE_SIZE * mapScaleFactor, TILE_SIZE * mapScaleFactor, tileColor);
+		}
+	}
 }
 
 void RenderRays() {
