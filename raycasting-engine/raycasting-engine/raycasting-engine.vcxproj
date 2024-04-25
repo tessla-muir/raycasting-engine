@@ -183,6 +183,8 @@
     <ClInclude Include="map.h" />
     <ClInclude Include="player.h" />
     <ClInclude Include="rays.h" />
+    <ClInclude Include="textures.h" />
+    <ClInclude Include="upng.h" />
     <ClInclude Include="wall.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

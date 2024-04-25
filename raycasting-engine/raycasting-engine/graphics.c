@@ -2,7 +2,7 @@
 
 static SDL_Window* window = NULL;
 static SDL_Renderer* renderer = NULL;
-static uint32_t* colorBuffer = NULL;
+static color_t* colorBuffer = NULL;
 static SDL_Texture* colorBufferTexture;
 
 int InitalizeWindow() {
@@ -37,7 +37,7 @@ int InitalizeWindow() {
 	SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
 
 	// Allocate total amount of bytes to hold in buffer 
-	colorBuffer = (uint32_t*)malloc(sizeof(uint32_t) * (uint32_t)WIN_WIDTH * (uint32_t)WIN_HEIGHT);
+	colorBuffer = (color_t*)malloc(sizeof(color_t) * (color_t)WIN_WIDTH * (color_t)WIN_HEIGHT);
 	colorBufferTexture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA32, SDL_TEXTUREACCESS_STREAMING, WIN_WIDTH, WIN_HEIGHT);
 
 	return 1;
@@ -53,7 +53,7 @@ void DestroyWindow() {
 	SDL_Quit();
 }
 
-void ClearColorBuffer(uint32_t color) {
+void ClearColorBuffer(color_t color) {
 	for (int x = 0; x < WIN_WIDTH; x++) {
 		for (int y = 0; y < WIN_HEIGHT; y++) {
 			colorBuffer[(WIN_WIDTH * y) + x] = color;
@@ -62,16 +62,16 @@ void ClearColorBuffer(uint32_t color) {
 }
 
 void RenderColorBuffer() {
-	SDL_UpdateTexture(colorBufferTexture, NULL, colorBuffer, (int)(uint32_t)WIN_WIDTH * sizeof(uint32_t));
+	SDL_UpdateTexture(colorBufferTexture, NULL, colorBuffer, (int)(color_t)WIN_WIDTH * sizeof(color_t));
 	SDL_RenderCopy(renderer, colorBufferTexture, NULL, NULL);
 	SDL_RenderPresent(renderer);
 }
 
-void DrawPixel(int x, int y, uint32_t color) {
+void DrawPixel(int x, int y, color_t color) {
 	colorBuffer[(WIN_WIDTH * y) + x] = color;
 }
 
-void DrawRect(int x, int y, int width, int height, uint32_t color) {
+void DrawRect(int x, int y, int width, int height, color_t color) {
 	for (int i = x; i < x + width; i++) {
 		for (int j = y; j < y + height; j++) {
 			DrawPixel(i, j, color);
@@ -81,7 +81,7 @@ void DrawRect(int x, int y, int width, int height, uint32_t color) {
 
 // Follows Digital Differential Analyzer for line drawing
 // Thanks to GeeksForGeeks for DDA Line Explanation
-void DrawLine(int x0, int y0, int x1, int y1, uint32_t color) {
+void DrawLine(int x0, int y0, int x1, int y1, color_t color) {
 	// Delta values
 	int dX = x1 - x0;
 	int dY = y1 - y0;

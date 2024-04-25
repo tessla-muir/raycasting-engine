@@ -10,14 +10,14 @@
 int isProgramRunning = 1;
 int lastFrameTicks;
 
-uint32_t* textures[NUM_TEXTURES];
+color_t* textures[NUM_TEXTURES];
 
-void Setup(void) {
+void Setup() {
 	// Asks uPNG to decode PNG files and loads them to wallTex array
 	LoadWallTextures();
 }
 
-void InputProcessing(void) {
+void InputProcessing() {
 	SDL_Event event;
 	SDL_PollEvent(&event);
 
@@ -67,7 +67,7 @@ void InputProcessing(void) {
 	}
 }
 
-void Render(void) {
+void Render() {
 	// Clear color buffer
 	ClearColorBuffer(0xFF000000);
 
@@ -81,7 +81,7 @@ void Render(void) {
 	RenderColorBuffer();
 }
 
-void Update(void) {
+void Update() {
 	// Wait to update the target frame -- even framerate independent of processor power
 	int waitTime = FRAME_LENGTH - (SDL_GetTicks() - lastFrameTicks);
 	if (waitTime > 0 && waitTime <= FRAME_LENGTH) {
@@ -96,7 +96,7 @@ void Update(void) {
 	CastAllRays();
 }
 
-void ReleaseResources(void) {
+void ReleaseResources() {
 	FreeWallTextures();
 	DestroyWindow();
 }

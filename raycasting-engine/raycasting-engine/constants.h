@@ -1,6 +1,9 @@
 #ifndef CONSTANTS_H
 #define CONSTANTS_H
 
+#include <stdint.h>
+#include <math.h>
+
 #define TILE_SIZE 64
 #define MAP_ROWS 13
 #define MAP_COLS 20
@@ -20,5 +23,8 @@
 
 #define TEX_WIDTH 64
 #define TEX_HEIGHT 64
+#define NUM_TEXTURES 8
+
+typedef uint32_t color_t;
 
 #endif

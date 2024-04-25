@@ -8,6 +8,7 @@
 #include "graphics.h"
 #include "textures.h"
 
-void RenderWallProj(void);
+void RenderWallProj();
+void changColorIntensity(color_t* color, float factor);
 
 #endif // !WALL_H

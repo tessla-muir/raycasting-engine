@@ -115,5 +115,11 @@
     <ClInclude Include="wall.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="textures.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="upng.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
