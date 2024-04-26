@@ -59,7 +59,7 @@ void CastRay(float rayAngle, int stripId) {
 	float nextHorizontalTouchX = xintercept;
 	float nextHorizontalTouchY = yintercept;
 
-	while (nextHorizontalTouchX >= 0 && nextHorizontalTouchX <= WIN_WIDTH && nextHorizontalTouchY >= 0 && nextHorizontalTouchY <= WIN_HEIGHT) {
+	while (nextHorizontalTouchX >= 0 && nextHorizontalTouchX <= MAP_COLS * TILE_SIZE && nextHorizontalTouchY >= 0 && nextHorizontalTouchY <= MAP_ROWS * TILE_SIZE) {
 		float xToCheck = nextHorizontalTouchX;
 		float yToCheck = nextHorizontalTouchY + (isRayFacingUp(rayAngle) ? -1 : 0);
 
@@ -101,7 +101,7 @@ void CastRay(float rayAngle, int stripId) {
 	float nextVerticalTouchX = xintercept;
 	float nextVerticalTouchY = yintercept;
 
-	while (nextVerticalTouchX >= 0 && nextVerticalTouchX <= WIN_WIDTH && nextVerticalTouchY >= 0 && nextVerticalTouchY <= WIN_HEIGHT) {
+	while (nextVerticalTouchX >= 0 && nextVerticalTouchX <= MAP_COLS * TILE_SIZE && nextVerticalTouchY >= 0 && nextVerticalTouchY <= MAP_ROWS * TILE_SIZE) {
 		float xToCheck = nextVerticalTouchX + (isRayFacingLeft(rayAngle) ? -1 : 0);
 		float yToCheck = nextVerticalTouchY;
 

@@ -51,7 +51,7 @@ void RenderWallProj() {
 			color_t texColor = wallTextures[texNum].texture_buffer[(TEX_WIDTH * textureOffsetY) + textureOffsetX];
 
 			// Makes pixel color more intense if ray hit was vetical
-			if (rays[i].wasHitVertical) {
+			if (rays[x].wasHitVertical) {
 				ChangeColorIntensity(&texColor, 0.7);
 			}
 
