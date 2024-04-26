@@ -12,25 +12,23 @@ static const char* textureFileNames[NUM_TEXTURES] = {
     "./images/eagle.png"
 };
 
-void LoadWallTextures() {
+void LoadTextures() {
     for (int i = 0; i < NUM_TEXTURES; i++) {
-        upng_t* upng;
-
-        upng = upng_new_from_file(textureFileNames[i]);
+        upng_t* upng = upng_new_from_file(textureFileNames[i]);
         if (upng != NULL) {
             upng_decode(upng);
             if (upng_get_error(upng) == UPNG_EOK) {
-                wallTextures[i].upngTexture = upng;
-                wallTextures[i].width = upng_get_width(upng);
-                wallTextures[i].height = upng_get_height(upng);
-                wallTextures[i].texture_buffer = (color_t*)upng_get_buffer(upng);
+                textures[i] = upng;
             }
+        }
+        else {
+            printf("Textures.c: Error loading texture %s \n", textureFileNames[i]);
         }
     }
 }
 
-void FreeWallTextures() {
+void FreeTextures() {
     for (int i = 0; i < NUM_TEXTURES; i++) {
-        upng_free(wallTextures[i].upngTexture);
+        upng_free(textures[i]);
     }
 }

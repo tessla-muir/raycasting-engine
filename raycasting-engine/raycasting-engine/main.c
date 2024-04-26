@@ -11,11 +11,9 @@
 int isProgramRunning = 1;
 int lastFrameTicks;
 
-color_t* textures[NUM_TEXTURES];
-
 void Setup() {
 	// Asks uPNG to decode PNG files and loads them to wallTex array
-	LoadWallTextures();
+	LoadTextures();
 }
 
 void InputProcessing() {
@@ -72,9 +70,11 @@ void Render() {
 	// Clear color buffer
 	ClearColorBuffer(0xFF000000);
 
+	// Render project objects
 	RenderWallProj();
+	// RenderSpriteProj();
 
-	// Render all objects on the current cycle, Displays minimap
+	// Render all objects on the minimap
 	RenderMap();
 	RenderRays();
 	RenderPlayer();
@@ -98,7 +98,7 @@ void Update() {
 }
 
 void ReleaseResources() {
-	FreeWallTextures();
+	FreeTextures();
 	DestroyWindow();
 }
 

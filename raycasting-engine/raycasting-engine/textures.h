@@ -5,16 +5,9 @@
 #include "upng.h"
 #include "constants.h"
 
-typedef struct {
-    upng_t* upngTexture;
-    int width;
-    int height;
-    color_t* texture_buffer;
-} texture_t;
+upng_t* textures[NUM_TEXTURES];
 
-texture_t wallTextures[NUM_TEXTURES];
-
-void LoadWallTextures();
-void FreeWallTextures();
+void LoadTextures();
+void FreeTextures();
 
 #endif

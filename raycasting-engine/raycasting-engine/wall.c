@@ -40,6 +40,8 @@ void RenderWallProj() {
 
 		// Texture ID from map
 		int texNum = rays[x].wallHitContent - 1;
+		int texWidth = upng_get_width(textures[texNum]);
+		int texHeight = upng_get_height(textures[texNum]);
 
 		// Render wall top to bottom pixel
 		for (int y = wallTopPix; y < wallBotPix; y++) {
@@ -47,8 +49,9 @@ void RenderWallProj() {
 			int distanceFromTop = y + (wallStripHeight / 2) - (WIN_HEIGHT / 2);
 			int textureOffsetY = distanceFromTop * ((float)TEX_HEIGHT / wallStripHeight);
 
-			// set color of wall to the color of texture
-			color_t texColor = wallTextures[texNum].texture_buffer[(TEX_WIDTH * textureOffsetY) + textureOffsetX];
+			// Set color of wall to the color of texture
+			color_t* wallTexBuffer = (color_t*)upng_get_buffer(textures[texNum]);
+			color_t texColor = wallTexBuffer[(TEX_WIDTH * textureOffsetY) + textureOffsetX];
 
 			// Makes pixel color more intense if ray hit was vetical
 			if (rays[x].wasHitVertical) {
