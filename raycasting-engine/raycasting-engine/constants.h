@@ -9,8 +9,8 @@
 #define MAP_COLS 20
 #define MAP_SCALER 0.25
 
-#define WIN_WIDTH (MAP_COLS * TILE_SIZE)
-#define WIN_HEIGHT (MAP_ROWS * TILE_SIZE)
+#define WIN_WIDTH 1280
+#define WIN_HEIGHT 720
 
 #define PI 3.14159265
 #define FOVA (60 * PI / 180)

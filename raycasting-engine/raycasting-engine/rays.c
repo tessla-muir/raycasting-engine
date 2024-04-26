@@ -59,7 +59,7 @@ void CastRay(float rayAngle, int stripId) {
 	float nextHorizontalTouchX = xintercept;
 	float nextHorizontalTouchY = yintercept;
 
-	while (nextHorizontalTouchX >= 0 && nextHorizontalTouchX <= WIN_WIDTH && nextHorizontalTouchY >= 0 && nextHorizontalTouchY <= WIN_HEIGHT) {
+	while (nextHorizontalTouchX >= 0 && nextHorizontalTouchX <= MAP_COLS * TILE_SIZE && nextHorizontalTouchY >= 0 && nextHorizontalTouchY <= MAP_ROWS * TILE_SIZE) {
 		float xToCheck = nextHorizontalTouchX;
 		float yToCheck = nextHorizontalTouchY + (isRayFacingUp(rayAngle) ? -1 : 0);
 
@@ -101,7 +101,7 @@ void CastRay(float rayAngle, int stripId) {
 	float nextVerticalTouchX = xintercept;
 	float nextVerticalTouchY = yintercept;
 
-	while (nextVerticalTouchX >= 0 && nextVerticalTouchX <= WIN_WIDTH && nextVerticalTouchY >= 0 && nextVerticalTouchY <= WIN_HEIGHT) {
+	while (nextVerticalTouchX >= 0 && nextVerticalTouchX <= MAP_COLS * TILE_SIZE && nextVerticalTouchY >= 0 && nextVerticalTouchY <= MAP_ROWS * TILE_SIZE) {
 		float xToCheck = nextVerticalTouchX + (isRayFacingLeft(rayAngle) ? -1 : 0);
 		float yToCheck = nextVerticalTouchY;
 
@@ -129,6 +129,7 @@ void CastRay(float rayAngle, int stripId) {
 		rays[stripId].wallHitY = VerticalWallHitY;
 		rays[stripId].wallHitContent = VerticalWallContent;
 		rays[stripId].wasHitVertical = 1;
+		rays[stripId].rayAngle = rayAngle;
 	}
 	else {
 		rays[stripId].distance = horizontalHitDist;
@@ -136,12 +137,8 @@ void CastRay(float rayAngle, int stripId) {
 		rays[stripId].wallHitY = horizontalWallHitY;
 		rays[stripId].wallHitContent = horizontalWallContent;
 		rays[stripId].wasHitVertical = 0;
+		rays[stripId].rayAngle = rayAngle;
 	}
-	rays[stripId].rayAngle = rayAngle;
-	rays[stripId].isRayFacingDown = isRayFacingDown;
-	rays[stripId].isRayFacingUp = isRayFacingUp;
-	rays[stripId].isRayFacingLeft = isRayFacingLeft;
-	rays[stripId].isRayFacingRight = isRayFacingRight;
 }
 
 void CastAllRays() {

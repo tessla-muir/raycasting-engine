@@ -22,7 +22,7 @@ int GetMapAt(int i, int j) {
 
 int HasMapWallAt(float x, float y) {
 	// Check window border
-	if (x < 0 || x > WIN_WIDTH || y < 0 || y > WIN_HEIGHT) return 0;
+	if (x < 0 || x > MAP_COLS * TILE_SIZE || y < 0 || y > MAP_ROWS * TILE_SIZE) return 0;
 
 	// Check made walls as well
 	int mapTileX = floor(x / TILE_SIZE);
