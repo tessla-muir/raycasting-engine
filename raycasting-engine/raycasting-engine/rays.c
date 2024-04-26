@@ -129,6 +129,7 @@ void CastRay(float rayAngle, int stripId) {
 		rays[stripId].wallHitY = VerticalWallHitY;
 		rays[stripId].wallHitContent = VerticalWallContent;
 		rays[stripId].wasHitVertical = 1;
+		rays[stripId].rayAngle = rayAngle;
 	}
 	else {
 		rays[stripId].distance = horizontalHitDist;
@@ -136,12 +137,8 @@ void CastRay(float rayAngle, int stripId) {
 		rays[stripId].wallHitY = horizontalWallHitY;
 		rays[stripId].wallHitContent = horizontalWallContent;
 		rays[stripId].wasHitVertical = 0;
+		rays[stripId].rayAngle = rayAngle;
 	}
-	rays[stripId].rayAngle = rayAngle;
-	rays[stripId].isRayFacingDown = isRayFacingDown;
-	rays[stripId].isRayFacingUp = isRayFacingUp;
-	rays[stripId].isRayFacingLeft = isRayFacingLeft;
-	rays[stripId].isRayFacingRight = isRayFacingRight;
 }
 
 void CastAllRays() {

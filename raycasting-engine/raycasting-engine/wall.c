@@ -1,6 +1,6 @@
 #include "wall.h"
 
-void changColorIntensity(color_t* color, float factor) {
+void ChangeColorIntensity(color_t* color, float factor) {
 	color_t a = (*color & 0xFF000000);
 	color_t r = (*color & 0x00FF0000) * factor;
 	color_t g = (*color & 0x0000FF00) * factor;
@@ -10,8 +10,8 @@ void changColorIntensity(color_t* color, float factor) {
 }
 
 void RenderWallProj() {
-	for (int i = 0; i < NUM_RAYS; i++) {
-		float perDist = rays[i].distance * cos(rays[i].rayAngle - player.rotation);
+	for (int x = 0; x < NUM_RAYS; x++) {
+		float perDist = rays[x].distance * cos(rays[x].rayAngle - player.rotation);
 		float projWallHeight = (TILE_SIZE / perDist) * DISTANCE_PROJ_PLANE;
 
 		int wallStripHeight = (int)projWallHeight;
@@ -24,22 +24,22 @@ void RenderWallProj() {
 
 		// Render color of ceiling
 		for (int y = 0; y < wallTopPix; y++) {
-			DrawPixel(i, y, 0xCCCCCC);
+			DrawPixel(x, y, 0xCCCCCC);
 		}
 
 		int textureOffsetX;
 		// Calc Offset X
-		if (rays[i].wasHitVertical) {
+		if (rays[x].wasHitVertical) {
 			// perform Offset for vert hit
-			textureOffsetX = (int)rays[i].wallHitY % TILE_SIZE;
+			textureOffsetX = (int)rays[x].wallHitY % TILE_SIZE;
 		}
 		else {
 			// perform Offset for horz hit
-			textureOffsetX = (int)rays[i].wallHitX % TILE_SIZE;
+			textureOffsetX = (int)rays[x].wallHitX % TILE_SIZE;
 		}
 
 		// Texture ID from map
-		int texNum = rays[i].wallHitContent - 1;
+		int texNum = rays[x].wallHitContent - 1;
 
 		// Render wall top to bottom pixel
 		for (int y = wallTopPix; y < wallBotPix; y++) {
@@ -52,15 +52,15 @@ void RenderWallProj() {
 
 			// Makes pixel color more intense if ray hit was vetical
 			if (rays[i].wasHitVertical) {
-				changColorIntensity(&texColor, 0.7);
+				ChangeColorIntensity(&texColor, 0.7);
 			}
 
-			DrawPixel(i, y, texColor);
+			DrawPixel(x, y, texColor);
 		}
 
 		// Render color of floor
 		for (int y = wallBotPix; y < WIN_HEIGHT; y++) {
-			DrawPixel(i, y, 0x444444);
+			DrawPixel(x, y, 0x444444);
 		}
 	}
 }

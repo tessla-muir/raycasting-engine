@@ -54,10 +54,8 @@ void DestroyWindow() {
 }
 
 void ClearColorBuffer(color_t color) {
-	for (int x = 0; x < WIN_WIDTH; x++) {
-		for (int y = 0; y < WIN_HEIGHT; y++) {
-			colorBuffer[(WIN_WIDTH * y) + x] = color;
-		}
+	for (int x = 0; x < WIN_WIDTH * WIN_HEIGHT; x++) {
+		colorBuffer[x] = color;
 	}
 }
 

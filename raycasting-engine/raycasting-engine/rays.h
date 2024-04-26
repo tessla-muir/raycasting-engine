@@ -14,10 +14,6 @@ typedef struct
 	float wallHitY;
 	float distance;
 	int wasHitVertical;
-	int isRayFacingUp;
-	int isRayFacingDown;
-	int isRayFacingLeft;
-	int isRayFacingRight;
 	int wallHitContent;
 } ray_t;
 
