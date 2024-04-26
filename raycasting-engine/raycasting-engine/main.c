@@ -6,6 +6,7 @@
 #include "rays.h"
 #include "map.h"
 #include "wall.h"
+#include "player.h"
 
 int isProgramRunning = 1;
 int lastFrameTicks;
