@@ -48,17 +48,31 @@ void RenderSpriteProj() {
 			float spritePosX = tan(spriteAngle) * DISTANCE_PROJ_PLANE;
 
 			// Find x values
-			float spriteLeftX = (WIN_WIDTH / 2) + spritePosX;
+			float spriteLeftX = (WIN_WIDTH / 2) + spritePosX - (spriteWidth / 2);
 			float spriteRightX = spriteLeftX + spriteWidth;
+
+			// Texture dimensions
+			int texWidth = upng_get_width(textures[sprites[i].texture]);
+			int texHeight = upng_get_height(textures[sprites[i].texture]);
 
 			// Now we can finally draw the sprite
 			// Loop through x
 			for (int x = spriteLeftX; x < spriteRightX; x++) {
+				int texelWidth = texWidth / spriteWidth; // Need to consider that one texture pixel could take up multiple on the screen
+				int texOffsetX = (x - spriteLeftX) * texelWidth;
+
 				// Loop through y
 				for (int y = spriteTopY; y < spriteBottomY; y++) {
 					// Ensure valid values
 					if (x > 0 && x < WIN_WIDTH && y > 0 && y < WIN_HEIGHT) {
-						DrawPixel(x, y, 0xFFFF0000);
+						int texelDist = y + (spriteHeight / 2) - (WIN_HEIGHT / 2); // Need to consider that one texture pixel could take up multiple on the screen
+						int texOffsetY = texelDist * (texHeight / spriteHeight);
+
+						color_t* spriteTexBuffer = (color_t*) upng_get_buffer(textures[sprites[i].texture]);
+						color_t texColor = spriteTexBuffer[(texWidth * texOffsetY) + texOffsetX];
+
+						//if (texColor == 0xFFFF00FF) continue; // Skip the bright pink background
+						DrawPixel(x, y, texColor);
 					}
 				}
 			}
