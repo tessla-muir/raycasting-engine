@@ -4,8 +4,8 @@
 
 static sprite_t sprites[NUM_SPRITES] = {
 	{.x = 400, .y = 530, .texture = 8}, // Barrel
-	{.x = 450, .y = 580, .texture = 9},
-	{.x = 500, .y = 620, .texture = 10}
+	{.x = 450, .y = 580, .texture = 9}, // table
+	{.x = 500, .y = 620, .texture = 10} // lamp
 };
 
 void RenderSpriteProj() {
@@ -20,8 +20,8 @@ void RenderSpriteProj() {
 		}
 
 		// Check if the sprite angle is within the player's FOV + small margin 
-		//const float Smargin = 0.2;
-		if (playerSpriteAngle < (FOVA / 2) || playerSpriteAngle > 2 * PI - (FOVA / 2)) {
+		const float Smargin = 0.1;
+		if (playerSpriteAngle < (FOVA / 2) + Smargin|| playerSpriteAngle > 2 * PI - (FOVA / 2) - Smargin) {
 			sprites[i].isVisible = 1;
 			sprites[i].angle = playerSpriteAngle;
 			sprites[i].dist = DistanceBetweenPoints(sprites[i].x, sprites[i].y, player.x, player.y);
@@ -37,8 +37,8 @@ void RenderSpriteProj() {
 		for (int j = i + 1; j < NUM_SPRITES; j++) {
 			if (sprites[i].dist < sprites[j].dist) {
 				sprite_t temp = sprites[i];
-				sprites[i].isVisible = sprites[j].isVisible;
-				sprites[j].isVisible = temp.isVisible;
+				sprites[i] = sprites[j];
+				sprites[j] = temp;
 			}
 		}
 	}
@@ -47,8 +47,11 @@ void RenderSpriteProj() {
 	// Similar to wall projection
 	for (int i = 0; i < NUM_SPRITES; i++) {
 		if (sprites[i].isVisible) {
+			// Calc perp dist of sprite to stop fish bowl effect
+			float perDist = sprites[i].dist * cos(sprites[i].angle);
+
 			// Find the sprite height -- Similar triangles
-			float spriteHeight = (TILE_SIZE / sprites[i].dist) * DISTANCE_PROJ_PLANE;
+			float spriteHeight = (TILE_SIZE / perDist) * DISTANCE_PROJ_PLANE;
 			float spriteWidth = spriteHeight; // Same in this case - square assets
 
 			// Find y values
@@ -87,7 +90,7 @@ void RenderSpriteProj() {
 						color_t texColor = spriteTexBuffer[(texWidth * texOffsetY) + texOffsetX];
 						
 						//if (texColor == 0xFFFF00FF) continue; // Skip the bright pink background
-						if (texColor != 0xFFFF00FF) {
+						if (sprites->dist < rays[x].distance && texColor != 0xFFFF00FF) {
 							DrawPixel(x, y, texColor);
 						}
 						
