@@ -12,18 +12,17 @@ void ChangeColorIntensity(color_t* color, float factor) {
 void RenderWallProj() {
 	for (int x = 0; x < NUM_RAYS; x++) {
 		float perDist = rays[x].distance * cos(rays[x].rayAngle - player.rotation);
-		float projWallHeight = (TILE_SIZE / perDist) * DISTANCE_PROJ_PLANE;
+		float WallHeight = (TILE_SIZE / perDist) * DISTANCE_PROJ_PLANE;
 
-		int wallStripHeight = (int)projWallHeight;
 
-		int wallTopPix = (WIN_HEIGHT / 2) - (wallStripHeight / 2);
-		wallTopPix = wallTopPix < 0 ? 0 : wallTopPix;
+		int wallTopY = (WIN_HEIGHT / 2) - (WallHeight / 2);
+		wallTopY = wallTopY < 0 ? 0 : wallTopY;
 
-		int wallBotPix = (WIN_HEIGHT / 2) + (wallStripHeight / 2);
-		wallBotPix = wallBotPix > WIN_HEIGHT ? WIN_HEIGHT : wallBotPix;
+		int wallBotY = (WIN_HEIGHT / 2) + (WallHeight / 2);
+		wallBotY = wallBotY > WIN_HEIGHT ? WIN_HEIGHT : wallBotY;
 
 		// Render color of ceiling
-		for (int y = 0; y < wallTopPix; y++) {
+		for (int y = 0; y < wallTopY; y++) {
 			DrawPixel(x, y, 0xCCCCCC);
 		}
 
@@ -44,14 +43,14 @@ void RenderWallProj() {
 		int texHeight = upng_get_height(textures[texNum]);
 
 		// Render wall top to bottom pixel
-		for (int y = wallTopPix; y < wallBotPix; y++) {
+		for (int y = wallTopY; y < wallBotY; y++) {
 			// Calc Offset Y
-			int distanceFromTop = y + (wallStripHeight / 2) - (WIN_HEIGHT / 2);
-			int textureOffsetY = distanceFromTop * ((float)TEX_HEIGHT / wallStripHeight);
+			int distanceFromTop = y + (WallHeight / 2) - (WIN_HEIGHT / 2);
+			int textureOffsetY = distanceFromTop * ((float)texHeight / WallHeight);
 
 			// Set color of wall to the color of texture
 			color_t* wallTexBuffer = (color_t*)upng_get_buffer(textures[texNum]);
-			color_t texColor = wallTexBuffer[(TEX_WIDTH * textureOffsetY) + textureOffsetX];
+			color_t texColor = wallTexBuffer[(texWidth * textureOffsetY) + textureOffsetX];
 
 			// Makes pixel color more intense if ray hit was vetical
 			if (rays[x].wasHitVertical) {
@@ -62,7 +61,7 @@ void RenderWallProj() {
 		}
 
 		// Render color of floor
-		for (int y = wallBotPix; y < WIN_HEIGHT; y++) {
+		for (int y = wallBotY; y < WIN_HEIGHT; y++) {
 			DrawPixel(x, y, 0x444444);
 		}
 	}

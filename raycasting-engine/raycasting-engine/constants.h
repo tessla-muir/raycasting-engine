@@ -15,8 +15,7 @@
 #define PI 3.14159265
 #define FOVA (60 * PI / 180)
 #define DISTANCE_PROJ_PLANE ((WIN_WIDTH / 2) / tan(FOVA / 2))
-#define WALL_STRIP_WIDTH 1
-#define NUM_RAYS WIN_WIDTH / WALL_STRIP_WIDTH
+#define NUM_RAYS WIN_WIDTH
 
 #define FPS 60
 #define FRAME_LENGTH (1000 / FPS)

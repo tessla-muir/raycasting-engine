@@ -3,6 +3,7 @@
 
 #include "constants.h"
 #include "map.h"
+#include "graphics.h"
 #include "rays.h"
 
 typedef struct {

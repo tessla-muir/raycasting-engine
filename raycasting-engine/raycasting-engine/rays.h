@@ -5,7 +5,7 @@
 #include <limits.h>
 #include "constants.h"
 #include "player.h"
-#include "map.h"
+#include "graphics.h"
 
 typedef struct
 {

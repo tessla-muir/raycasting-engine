@@ -22,6 +22,7 @@ void RenderSpriteProj() {
 			sprites[i].isVisible = 1;
 			sprites[i].angle = playerSpriteAngle;
 			sprites[i].dist = DistanceBetweenPoints(sprites[i].x, sprites[i].y, player.x, player.y);
+
 		}
 		else {
 			sprites[i].isVisible = 0;
@@ -48,7 +49,7 @@ void RenderSpriteProj() {
 			float spritePosX = tan(spriteAngle) * DISTANCE_PROJ_PLANE;
 
 			// Find x values
-			float spriteLeftX = (WIN_WIDTH / 2) + spritePosX - (spriteWidth / 2);
+			float spriteLeftX = (WIN_WIDTH / 2) + spritePosX; //- (spriteWidth / 2)
 			float spriteRightX = spriteLeftX + spriteWidth;
 
 			// Texture dimensions
@@ -58,7 +59,7 @@ void RenderSpriteProj() {
 			// Now we can finally draw the sprite
 			// Loop through x
 			for (int x = spriteLeftX; x < spriteRightX; x++) {
-				int texelWidth = texWidth / spriteWidth; // Need to consider that one texture pixel could take up multiple on the screen
+				int texelWidth = (texWidth / spriteWidth); // Need to consider that one texture pixel could take up multiple on the screen
 				int texOffsetX = (x - spriteLeftX) * texelWidth;
 
 				// Loop through y
@@ -71,8 +72,13 @@ void RenderSpriteProj() {
 						color_t* spriteTexBuffer = (color_t*) upng_get_buffer(textures[sprites[i].texture]);
 						color_t texColor = spriteTexBuffer[(texWidth * texOffsetY) + texOffsetX];
 
-						//if (texColor == 0xFFFF00FF) continue; // Skip the bright pink background
 						DrawPixel(x, y, texColor);
+						/*
+						//if (texColor == 0xFFFF00FF) continue; // Skip the bright pink background
+						if (texColor != 0xFFFF00FF) {
+							DrawPixel(x, y, texColor);
+						}
+						*/
 					}
 				}
 			}

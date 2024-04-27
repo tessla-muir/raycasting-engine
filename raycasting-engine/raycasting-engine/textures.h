@@ -2,6 +2,7 @@
 #define TEXTURES_H
 
 #include <stdint.h>
+#include <stdio.h>
 #include "upng.h"
 #include "constants.h"
 

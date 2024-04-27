@@ -1,5 +1,5 @@
 #include "textures.h"
-#include <stdio.h>
+
 
 static const char* textureFileNames[NUM_TEXTURES] = {
     "./images/redbrick.png",
@@ -10,7 +10,7 @@ static const char* textureFileNames[NUM_TEXTURES] = {
     "./images/bluestone.png",
     "./images/wood.png",
     "./images/eagle.png",
-    "./images/barrel.png",
+    "./images/barrel.png",      // [9]
     "./images/light.png",
     "./images/table.png",
     "./images/guard.png",

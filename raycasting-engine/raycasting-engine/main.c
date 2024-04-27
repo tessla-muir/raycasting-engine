@@ -67,6 +67,21 @@ void InputProcessing() {
 	}
 }
 
+void Update() {
+	// Wait to update the target frame -- even framerate independent of processor power
+	int waitTime = FRAME_LENGTH - (SDL_GetTicks() - lastFrameTicks);
+	if (waitTime > 0 && waitTime <= FRAME_LENGTH) {
+		SDL_Delay(waitTime);
+	}
+
+	float deltaTime = (SDL_GetTicks() - lastFrameTicks) / 1000.0f;
+	lastFrameTicks = SDL_GetTicks();
+
+	// Update objects based on deltaTime!
+	PlayerMovement(deltaTime);
+	CastAllRays();
+}
+
 void Render() {
 	// Clear color buffer
 	ClearColorBuffer(0xFF000000);
@@ -84,20 +99,6 @@ void Render() {
 	RenderColorBuffer();
 }
 
-void Update() {
-	// Wait to update the target frame -- even framerate independent of processor power
-	int waitTime = FRAME_LENGTH - (SDL_GetTicks() - lastFrameTicks);
-	if (waitTime > 0 && waitTime <= FRAME_LENGTH) {
-		SDL_Delay(waitTime);
-	}
-
-	float deltaTime = (SDL_GetTicks() - lastFrameTicks) / 1000.0f;
-	lastFrameTicks = SDL_GetTicks();
-
-	// Update objects based on deltaTime!
-	PlayerMovement(deltaTime);
-	CastAllRays();
-}
 
 void ReleaseResources() {
 	FreeTextures();

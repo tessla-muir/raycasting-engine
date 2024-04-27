@@ -5,7 +5,7 @@
 #include "graphics.h"
 #include "textures.h"s
 #include "player.h"
-#include <stdio.h>
+#include "rays.h"
 
 typedef struct {
 	float x;
