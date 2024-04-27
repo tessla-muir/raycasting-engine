@@ -3,7 +3,7 @@
 ray_t rays[NUM_RAYS];
 
 void NormalizeAngle(float* angle) {
-	*angle = remainderf(*angle, (2 * PI));
+	*angle = remainder(*angle, (2 * PI));
 	if (*angle < 0) {
 		*angle = (2 * PI) + *angle;
 	}

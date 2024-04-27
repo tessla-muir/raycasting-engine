@@ -3,8 +3,8 @@
 player_t player = {
 	.x = WIN_WIDTH / 2,
 	.y = WIN_HEIGHT / 2,
-	.width = 25,
-	.height = 25,
+	.width = 12,
+	.height = 12,
 	.walkDir = 0,
 	.turnDir = 0,
 	.rotation = PI / 2,
@@ -15,6 +15,7 @@ player_t player = {
 void PlayerMovement(float time) {
 	// Rotation
 	player.rotation += player.turnDir * (player.turnSpeed * time);
+	NormalizeAngle(&player.rotation);
 
 	// Movement
 	float step = player.walkDir * (player.walkSpeed * time);

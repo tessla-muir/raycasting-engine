@@ -5,6 +5,7 @@
 #include "graphics.h"
 #include "textures.h"s
 #include "player.h"
+#include <stdio.h>
 
 typedef struct {
 	float x;
@@ -12,6 +13,7 @@ typedef struct {
 	float dist;
 	float angle;
 	int texture;
+	float isVisible;
 } sprite_t;
 
 void RenderSpriteProj(void);
