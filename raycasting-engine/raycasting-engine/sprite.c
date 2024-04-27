@@ -1,9 +1,11 @@
 #include "sprite.h"
 
-#define NUM_SPRITES 1
+#define NUM_SPRITES 3
 
 static sprite_t sprites[NUM_SPRITES] = {
-	{ .x = 400, .y = 530, .texture = 9 }
+	{.x = 400, .y = 530, .texture = 8}, // Barrel
+	{.x = 450, .y = 580, .texture = 9},
+	{.x = 500, .y = 620, .texture = 10}
 };
 
 void RenderSpriteProj() {
@@ -17,8 +19,9 @@ void RenderSpriteProj() {
 			playerSpriteAngle += 2 * PI;
 		}
 
-		// Check if the sprite angle is within the player's FOV
-		if (playerSpriteAngle < FOVA / 2 || playerSpriteAngle > 2 * PI - FOVA / 2) {
+		// Check if the sprite angle is within the player's FOV + small margin 
+		//const float Smargin = 0.2;
+		if (playerSpriteAngle < (FOVA / 2) || playerSpriteAngle > 2 * PI - (FOVA / 2)) {
 			sprites[i].isVisible = 1;
 			sprites[i].angle = playerSpriteAngle;
 			sprites[i].dist = DistanceBetweenPoints(sprites[i].x, sprites[i].y, player.x, player.y);
@@ -26,6 +29,17 @@ void RenderSpriteProj() {
 		}
 		else {
 			sprites[i].isVisible = 0;
+		}
+	}
+	
+	// Sorts aprites by distance 
+	for (int i = 0; i < NUM_SPRITES - 1; i++) {
+		for (int j = i + 1; j < NUM_SPRITES; j++) {
+			if (sprites[i].dist < sprites[j].dist) {
+				sprite_t temp = sprites[i];
+				sprites[i].isVisible = sprites[j].isVisible;
+				sprites[j].isVisible = temp.isVisible;
+			}
 		}
 	}
 
@@ -49,7 +63,7 @@ void RenderSpriteProj() {
 			float spritePosX = tan(spriteAngle) * DISTANCE_PROJ_PLANE;
 
 			// Find x values
-			float spriteLeftX = (WIN_WIDTH / 2) + spritePosX; //- (spriteWidth / 2)
+			float spriteLeftX = (WIN_WIDTH / 2) + spritePosX - (spriteWidth / 2);
 			float spriteRightX = spriteLeftX + spriteWidth;
 
 			// Texture dimensions
@@ -59,7 +73,7 @@ void RenderSpriteProj() {
 			// Now we can finally draw the sprite
 			// Loop through x
 			for (int x = spriteLeftX; x < spriteRightX; x++) {
-				int texelWidth = (texWidth / spriteWidth); // Need to consider that one texture pixel could take up multiple on the screen
+				float texelWidth = (texWidth / spriteWidth); // Need to consider that one texture pixel could take up multiple on the screen
 				int texOffsetX = (x - spriteLeftX) * texelWidth;
 
 				// Loop through y
@@ -71,14 +85,12 @@ void RenderSpriteProj() {
 
 						color_t* spriteTexBuffer = (color_t*) upng_get_buffer(textures[sprites[i].texture]);
 						color_t texColor = spriteTexBuffer[(texWidth * texOffsetY) + texOffsetX];
-
-						DrawPixel(x, y, texColor);
-						/*
+						
 						//if (texColor == 0xFFFF00FF) continue; // Skip the bright pink background
 						if (texColor != 0xFFFF00FF) {
 							DrawPixel(x, y, texColor);
 						}
-						*/
+						
 					}
 				}
 			}
