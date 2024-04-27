@@ -39,6 +39,9 @@
     <ClCompile Include="wall.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="sprite.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="images\._bluestone.png">
@@ -95,6 +98,21 @@
     <Image Include="images\wood.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="images\guard.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images\light.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images\table.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images\armor.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images\barrel.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="graphics.h">
@@ -119,6 +137,9 @@
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="upng.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="sprite.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>

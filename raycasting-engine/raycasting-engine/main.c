@@ -7,6 +7,7 @@
 #include "map.h"
 #include "wall.h"
 #include "player.h"
+#include "sprite.h"
 
 int isProgramRunning = 1;
 int lastFrameTicks;
@@ -72,11 +73,12 @@ void Render() {
 
 	// Render project objects
 	RenderWallProj();
-	// RenderSpriteProj();
+	RenderSpriteProj();
 
 	// Render all objects on the minimap
 	RenderMap();
 	RenderRays();
+	RenderMapSprites();
 	RenderPlayer();
 
 	RenderColorBuffer();

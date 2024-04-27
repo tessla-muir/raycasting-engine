@@ -23,7 +23,7 @@
 
 #define TEX_WIDTH 64
 #define TEX_HEIGHT 64
-#define NUM_TEXTURES 8
+#define NUM_TEXTURES 13
 
 typedef uint32_t color_t;
 
