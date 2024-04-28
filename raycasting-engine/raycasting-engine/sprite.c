@@ -1,18 +1,26 @@
 #include "sprite.h"
 
-#define NUM_SPRITES 10
+#define NUM_SPRITES 18
 
 static sprite_t sprites[NUM_SPRITES] = {
+	{.x = 130, .y = 380, .texture = 14}, // Dog
+	{.x = 110, .y = 400, .texture = 12}, // Guard
 	{.x = 200, .y = 710, .texture = 9}, // Barrel
 	{.x = 250, .y = 730, .texture = 9}, // Barrel
-	{.x = 450, .y = 580, .texture = 11}, // Table
-	{.x = 450, .y = 580, .texture = 10}, // Light
+	{.x = 450, .y = 680, .texture = 11}, // Table
+	{.x = 350, .y = 220, .texture = 10}, // Light
+	{.x = 350, .y = 580, .texture = 10}, // Light
 	{.x = 300, .y = 120, .texture = 13}, // Armor
 	{.x = 400, .y = 120, .texture = 13}, // Armor
-	{.x = 700, .y = 680, .texture = 14}, // Dog
+	{.x = 620, .y = 280, .texture = 12}, // Guard
+	{.x = 700, .y = 580, .texture = 14}, // Dog
+	{.x = 740, .y = 750, .texture = 9}, // Barrel
 	{.x = 880, .y = 365, .texture = 12}, // Guard
+	{.x = 980, .y = 220, .texture = 10}, // Light
 	{.x = 980, .y = 580, .texture = 11}, // Table
 	{.x = 980, .y = 580, .texture = 10}, // Light
+	{.x = 1090, .y = 750, .texture = 9}, // Barrel
+	{.x = 850, .y = 80, .texture = 13}, // Armor
 };
 
 void RenderSpriteProj() {
@@ -21,10 +29,14 @@ void RenderSpriteProj() {
 		// Angle between the center of the player's FOV and the sprite
 		float playerSpriteAngle = player.rotation - atan2(sprites[i].y - player.y, sprites[i].x - player.x);
 
-		// Normalize the angle to be between 0 and 2 * PI
-		if (playerSpriteAngle < 0) {
+		// Normalize the angle to be between 0 and 180
+		if (playerSpriteAngle > PI) {
+			playerSpriteAngle -= 2 * PI;
+		}
+		if (playerSpriteAngle < -PI) {
 			playerSpriteAngle += 2 * PI;
 		}
+		playerSpriteAngle = fabs(playerSpriteAngle);
 
 		// Check if the sprite angle is within the player's FOV + small margin 
 		const float Smargin = 0.15;
