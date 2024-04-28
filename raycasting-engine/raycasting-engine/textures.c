@@ -10,11 +10,13 @@ static const char* textureFileNames[NUM_TEXTURES] = {
     "./images/bluestone.png",
     "./images/wood.png",
     "./images/eagle.png",
-    "./images/barrel.png",      // [8]
+    "./images/rit.png",
+    "./images/barrel.png",      // [9]
     "./images/light.png",
     "./images/table.png",
     "./images/guard.png",
-    "./images/armor.png"
+    "./images/armor.png",
+    "./images/dog.png"
 };
 
 void LoadTextures() {

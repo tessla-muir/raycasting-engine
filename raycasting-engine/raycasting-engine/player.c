@@ -1,13 +1,13 @@
 #include "player.h"
 
 player_t player = {
-	.x = WIN_WIDTH / 2,
-	.y = WIN_HEIGHT / 2,
+	.x = 350,
+	.y = 450,
 	.width = 12,
 	.height = 12,
 	.walkDir = 0,
 	.turnDir = 0,
-	.rotation = PI / 2,
+	.rotation = 3 * PI / 2,
 	.walkSpeed = 80,
 	.turnSpeed = 45 * (PI / 180)
 };

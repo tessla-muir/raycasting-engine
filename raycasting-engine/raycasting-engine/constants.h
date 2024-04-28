@@ -6,7 +6,7 @@
 
 #define TILE_SIZE 64
 #define MAP_ROWS 13
-#define MAP_COLS 20
+#define MAP_COLS 19
 #define MAP_SCALER 0.25
 
 #define WIN_WIDTH 1280
@@ -22,7 +22,7 @@
 
 #define TEX_WIDTH 64
 #define TEX_HEIGHT 64
-#define NUM_TEXTURES 13
+#define NUM_TEXTURES 15
 
 typedef uint32_t color_t;
 

@@ -1,11 +1,18 @@
 #include "sprite.h"
 
-#define NUM_SPRITES 3
+#define NUM_SPRITES 10
 
 static sprite_t sprites[NUM_SPRITES] = {
-	{.x = 400, .y = 530, .texture = 8}, // Barrel
-	{.x = 450, .y = 580, .texture = 9}, // table
-	{.x = 500, .y = 620, .texture = 10} // lamp
+	{.x = 200, .y = 710, .texture = 9}, // Barrel
+	{.x = 250, .y = 730, .texture = 9}, // Barrel
+	{.x = 450, .y = 580, .texture = 11}, // Table
+	{.x = 450, .y = 580, .texture = 10}, // Light
+	{.x = 300, .y = 120, .texture = 13}, // Armor
+	{.x = 400, .y = 120, .texture = 13}, // Armor
+	{.x = 700, .y = 680, .texture = 14}, // Dog
+	{.x = 880, .y = 365, .texture = 12}, // Guard
+	{.x = 980, .y = 580, .texture = 11}, // Table
+	{.x = 980, .y = 580, .texture = 10}, // Light
 };
 
 void RenderSpriteProj() {
@@ -20,7 +27,7 @@ void RenderSpriteProj() {
 		}
 
 		// Check if the sprite angle is within the player's FOV + small margin 
-		const float Smargin = 0.1;
+		const float Smargin = 0.15;
 		if (playerSpriteAngle < (FOVA / 2) + Smargin|| playerSpriteAngle > 2 * PI - (FOVA / 2) - Smargin) {
 			sprites[i].isVisible = 1;
 			sprites[i].angle = playerSpriteAngle;

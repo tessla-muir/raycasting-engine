@@ -44,33 +44,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="images\._bluestone.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="images\._colorstone.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="images\._eagle.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="images\._graystone.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="images\._mossystone.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="images\._pikuma.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="images\._purplestone.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="images\._redbrick.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="images\._wood.png">
-      <Filter>Resource Files</Filter>
-    </Image>
     <Image Include="images\bluestone.png">
       <Filter>Resource Files</Filter>
     </Image>
@@ -84,9 +57,6 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="images\mossystone.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="images\pikuma.png">
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="images\purplestone.png">
@@ -111,6 +81,12 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="images\barrel.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images\rit.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images\dog.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

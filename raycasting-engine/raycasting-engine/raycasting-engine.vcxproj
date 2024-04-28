@@ -159,27 +159,19 @@
     <ClCompile Include="wall.c" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="images\._bluestone.png" />
-    <Image Include="images\._colorstone.png" />
-    <Image Include="images\._eagle.png" />
-    <Image Include="images\._graystone.png" />
-    <Image Include="images\._mossystone.png" />
-    <Image Include="images\._pikuma.png" />
-    <Image Include="images\._purplestone.png" />
-    <Image Include="images\._redbrick.png" />
-    <Image Include="images\._wood.png" />
     <Image Include="images\armor.png" />
     <Image Include="images\barrel.png" />
     <Image Include="images\bluestone.png" />
     <Image Include="images\colorstone.png" />
+    <Image Include="images\dog.png" />
     <Image Include="images\eagle.png" />
     <Image Include="images\graystone.png" />
     <Image Include="images\guard.png" />
     <Image Include="images\light.png" />
     <Image Include="images\mossystone.png" />
-    <Image Include="images\pikuma.png" />
     <Image Include="images\purplestone.png" />
     <Image Include="images\redbrick.png" />
+    <Image Include="images\rit.png" />
     <Image Include="images\table.png" />
     <Image Include="images\wood.png" />
   </ItemGroup>
