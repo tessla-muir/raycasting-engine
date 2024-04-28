@@ -97,7 +97,7 @@ void RenderSpriteProj() {
 						color_t texColor = spriteTexBuffer[(texWidth * texOffsetY) + texOffsetX];
 						
 						//if (texColor == 0xFFFF00FF) continue; // Skip the bright pink background
-						if (sprites->dist < rays[x].distance && texColor != 0xFFFF00FF) {
+						if (sprites[i].dist < rays[x].distance && texColor != 0xFFFF00FF) {
 							DrawPixel(x, y, texColor);
 						}
 						
