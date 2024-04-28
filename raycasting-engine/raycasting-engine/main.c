@@ -7,15 +7,14 @@
 #include "map.h"
 #include "wall.h"
 #include "player.h"
+#include "sprite.h"
 
 int isProgramRunning = 1;
 int lastFrameTicks;
 
-color_t* textures[NUM_TEXTURES];
-
 void Setup() {
 	// Asks uPNG to decode PNG files and loads them to wallTex array
-	LoadWallTextures();
+	LoadTextures();
 }
 
 void InputProcessing() {
@@ -68,20 +67,6 @@ void InputProcessing() {
 	}
 }
 
-void Render() {
-	// Clear color buffer
-	ClearColorBuffer(0xFF000000);
-
-	RenderWallProj();
-
-	// Render all objects on the current cycle, Displays minimap
-	RenderMap();
-	RenderRays();
-	RenderPlayer();
-
-	RenderColorBuffer();
-}
-
 void Update() {
 	// Wait to update the target frame -- even framerate independent of processor power
 	int waitTime = FRAME_LENGTH - (SDL_GetTicks() - lastFrameTicks);
@@ -97,8 +82,26 @@ void Update() {
 	CastAllRays();
 }
 
+void Render() {
+	// Clear color buffer
+	ClearColorBuffer(0xFF000000);
+
+	// Render project objects
+	RenderWallProj();
+	RenderSpriteProj();
+
+	// Render all objects on the minimap
+	RenderMap();
+	RenderRays();
+	RenderMapSprites();
+	RenderPlayer();
+
+	RenderColorBuffer();
+}
+
+
 void ReleaseResources() {
-	FreeWallTextures();
+	FreeTextures();
 	DestroyWindow();
 }
 

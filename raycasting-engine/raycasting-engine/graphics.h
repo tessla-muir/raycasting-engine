@@ -2,6 +2,8 @@
 #define GRAPHICS_H
 
 #include <stdio.h>
+#include <stdint.h>
+#include <stdbool.h>
 #include <SDL.h>
 #include "constants.h"
 
